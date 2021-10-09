@@ -1,0 +1,74 @@
+<div class="modal-body" id="find-<?php echo $view_rotina;?>">
+    <div class="row">
+        <?php foreach($view_filter as $i => $v):?>
+
+        <div class="col <?php echo isset($v['col']) ? $v['col'] : '';?>">
+            <div class="form-group">
+                <label><?php echo $v['title'];?></label>
+                <div class="input-group">
+                    <input type="text" name="<?php echo $v['name'];?>" class="form-control" autocomplete="off">
+                    <?php if(($i+1)==count($view_filter)):?>
+                        <button class="btn btn-primary" id="btn-find">Pesquisar</button>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
+
+        <?php endforeach;?>
+
+    </div>
+    <div class="row">
+        <div class="col-12">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-12">
+            <table id="table-find" class="table"></table>
+        </div>
+    </div>
+</div>
+
+<script>
+    var find<?php echo $view_rotina;?> = {
+        table: $('#find-<?php echo $view_rotina;?> #table-find').DataTable({
+            draw: 1,
+            destroy: true,
+            dom: 'tp',
+            columns: <?php echo json_encode($view_column);?>
+        })
+    };
+
+    find<?php echo $view_rotina;?>.table.on('dblclick', 'tbody tr', function(){
+
+        var t = find<?php echo $view_rotina;?>.table.row( this ).data();
+
+        if (typeof t != 'undefined'){
+            $.each(t, function(i,v){
+                var ip = $('form.form-<?php echo $view_parent;?>').find('input[name="' + i + '"].<?php echo $view_classInput;?>');
+                console.log(ip);
+                ip.val(v);
+            });
+
+            var box = $('body').find('div.modal').last().attr('id');
+            $('#' + box).modal('hide');
+            fn.modalClose(box);
+        }
+    });
+
+    $('#find-<?php echo $view_rotina;?>').on('click', '#btn-find', function(){
+        let inputs = $('#find-<?php echo $view_rotina;?>').find('input[type="text"]');
+        var obj = {};
+
+        $.each(inputs, function(i,v){
+            obj[v.name] = v.value;
+        });
+
+        $.post(window.Area + '<?php echo $view_uri['getlist'];?>', obj, function(r){
+            find<?php echo $view_rotina;?>.table.clear();
+            find<?php echo $view_rotina;?>.table.rows.add(r);
+            find<?php echo $view_rotina;?>.table.draw();
+        }, 'JSON');
+    });
+</script>
+

@@ -1,0 +1,20 @@
+{
+    "name": "mtakeshi/form-create",
+    "description": "Criador de Formulário conforme a estrutura de uma tabela",
+    "minimum-stability": "dev",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Maicon Takeshi Kamiya",
+            "email": "maiconkamiya@hotail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "criativa\\": "src/"
+        }
+    },
+    "require": {
+        "twbs/bootstrap": "dev-main"
+    }
+}

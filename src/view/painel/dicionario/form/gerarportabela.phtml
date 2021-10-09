@@ -1,0 +1,50 @@
+<div class="modal-body">
+    <form name="form-gerar-dicionario">
+
+        <div class="row">
+
+            <div class="col">
+                <div class="form-group">
+                    <label>Tabela</label>
+                    <input type="text" name="tabela" class="form-control" autocomplete="off">
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+
+            <div class="col">
+                <div class="form-group">
+                    <label>Código Rotina</label>
+                    <input type="text" name="codrotina" class="form-control" autocomplete="off">
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" id="btn-gerar">Gerar</button>
+</div>
+
+<script>
+
+    $('#btn-gerar').click(function(){
+        let inputs = $('[name="form-gerar-dicionario"]').find('input[type="text"]');
+        var obj = {};
+
+        $.each(inputs, function(i,v){
+            obj[v.name] = v.value;
+        });
+
+        $.post(window.Area + 'dicionario/criar', obj, function(){
+            al.dialog('success','Concluído','Procedimento finalizado');
+
+            var box = $('body').find('div.modal').last().attr('id');
+            console.log(box);
+            $('#' + box).modal('hide');
+            fn.modalClose(box);
+        });
+    });
+</script>

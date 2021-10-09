@@ -1,0 +1,491 @@
+<div id="rotina-<?php echo $view_rotina;?>">
+    <div class="nav-scroller bg-body shadow-sm">
+
+        <nav class="nav nav-underline" aria-label="Secondary navigation">
+            <a class="nav-link">Rotina <?php echo $view_rotina;?></a>
+            <a class="nav-link active" id="filtro-tab" data-bs-toggle="tab" href="#filtro" type="button" role="tab" aria-controls="home" aria-selected="true">Filtro de Pesquisa</a>
+            <a class="nav-link" id="resultado-tab" data-bs-toggle="tab" href="#resultado" type="button" role="tab" aria-controls="home" aria-selected="true">
+                Resultado da Pesquisa
+                <span class="badge bg-light text-dark rounded-pill align-text-bottom" id="label-tt-<?php echo $view_rotina;?>"></span>
+            </a>
+            <a class="d-none" id="formulario-tab" data-bs-toggle="tab" href="#formulario" type="button" role="tab" aria-controls="home" aria-selected="true">Formulário</a>
+            <a class="nav-link" id="novo-registro" data-bs-toggle="tab" href="javascript:;">Novo Registro</a>
+        </nav>
+    </div>
+
+    <div class="container-fluid mt-3">
+
+        <div class="tab-content" id="tabContent">
+            <div class="tab-pane fade show active" id="filtro" role="tabpanel" aria-labelledby="filtro-tab">
+                <div class="row">
+                    <div class="col col-2 pt-3 pb-3 pe-0">
+
+                        <div class="flex-shrink-0 p-3 pe-0 me-0 bg-white" style="width: 100%;">
+                        <span class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+                            Opções de navegação
+                        </span>
+                            <ul class="list-unstyled ps-0 mb-0 grupo-ancher" style="height: 450px; overflow-y: auto">
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="col col-10 ps-0">
+
+                        <div class="card shadow p-0 rounded">
+                            <div class="card-body">
+                                <h5 class="card-title">Pesquisa</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Filtro de Pesquisa</h6>
+                                <form class="filter-<?php echo $view_rotina;?>">
+                                    <table id="table-filtro" class="table" style="width: 100%;"></table>
+
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+                                        <button type="button" class="btn btn-primary btn-submit">Pesquisar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="resultado" role="tabpanel" aria-labelledby="resultado-tab" >
+                <div class="row">
+                    <div class="col col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table id="table-resultado" class="table nowrap" style="width: 100%;"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="formulario" role="tabpanel" aria-labelledby="formulario-tab">
+                <div class="row">
+                    <div class="col col-2 pt-3 pb-3 pe-0">
+
+                        <div class="flex-shrink-0 p-3 pe-0 me-0 bg-white" style="width: 100%;">
+                        <span class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+                            Opções de navegação
+                        </span>
+                            <ul class="list-unstyled ps-0 mb-0 grupo-ancher" style="height: 450px; overflow-y: auto">
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="col col-8 ps-0 pe-0">
+
+                        <div class="card shadow p-0 rounded">
+                            <div class="card-body">
+                                <h5 class="card-title">Cadastro</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Formulário de Cadastro</h6>
+
+                                <form class="form-<?php echo $view_rotina;?>" novalidate>
+                                    <table id="table-formulario" class="table" style="width: 100%;"></table>
+
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+                                        <button type="button" class="btn btn-primary btn-submit">Gravar</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col col-2 pt-3 pb-3 ps-0">
+                        <div class="flex-shrink-0 p-3 ps-0 ms-0 bg-white" style="width: 100%;">
+                        <span class="d-flex align-items-center pb-3 ps-3 mb-3 link-dark text-decoration-none border-bottom">
+                            Informaçoes
+                        </span>
+                            <div class="info ps-0 ps-3 mb-0" style="height: 450px; overflow-y: auto">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    var optionsFilter = {
+        draw: 1,
+        destroy: true,
+        dom: 'tS',
+        columns: [
+            {data: 'nome', class: 'align-middle bg-light bg-gradient'},
+            {data: 'nome', class: 'td-form bg-white'},
+            {data: 'coluna', class: 'td-form bg-white'},
+            {data: 'grupo', class: 'd-none'}
+        ],
+
+        autoWidth: false,
+        columnDefs: [
+            { width: 190, targets: 0 },
+            { width: 130, targets: 1 }
+        ],
+
+        ordering: false,
+        paging: false,
+
+        scrollY: '450px',
+
+        rowCallback: function( row, data ) {
+            var valor = {};
+
+            $.each(data, function(i,v){
+                valor[i] = v;
+            });
+
+            //$('td:eq(1)', row).html(data['descricao'] + '<br><small>'+data['nome']+', tipo '+data['tipo']+' op:'+data['options']+'</small>');
+            if (data['flagObrigatorio']=='S'){
+                $('td:eq(0)', row).css({'font-weight':'bold'});
+            }
+
+            valor.tipo = "select";
+            valor.item = "equals|igual a,noequals|diferente,like|que contenha,nolike|que não contenha";
+            valor.coluna = data['coluna'] + "[operador]";
+
+            $('td:eq(1)', row).html(typefield(valor));
+
+            valor.coluna = data['coluna'] + "[valor]";
+            valor.tipo = data['tipo'];
+            valor.item = data['item'];
+
+            $('td:eq(2)', row).html(typefield(valor));
+        },
+        drawCallback: function(){
+
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+
+            api.column(3, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group bg-primary bg-gradient"><td colspan="3" class="fw-bold text-white">'+group+'</td></tr>'
+                    );
+                    last = group;
+                }
+            });
+        }
+    };
+
+    var optionsForm = {
+        draw: 1,
+        destroy: true,
+        dom: 'tS',
+        columns: [
+            {data: 'nome', class: 'align-middle bg-light bg-gradient'},
+            {data: 'coluna', class: 'td-form bg-white'},
+            {data: 'grupo', class: 'd-none'},
+            {data: 'descricao', class: 'd-none'}
+        ],
+
+        autoWidth: false,
+        columnDefs: [
+            { width: 190, targets: 0 }
+        ],
+
+        ordering: false,
+        paging: false,
+
+        scrollY: '450px',
+
+        rowCallback: function( row, data ) {
+
+            //$('td:eq(1)', row).html(data['descricao'] + '<br><small>'+data['nome']+', tipo '+data['tipo']+' op:'+data['options']+'</small>');
+            if (data['flagObrigatorio']=='S'){
+                $('td:eq(0)', row).css({'font-weight':'bold'});
+            }
+
+            $('td:eq(1)', row).html(typefield(data, 'valor'));
+
+        },
+        drawCallback: function(){
+
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+
+            api.column(2, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group bg-primary bg-gradient"><td colspan="3" class="fw-bold text-white">'+group+'</td></tr>'
+                    );
+                    last = group;
+                }
+            });
+        }
+    };
+
+    var optionsTable = {
+        draw: 1,
+        destroy: true,
+        dom: 'ftp',
+        columns: [],
+        //scrollResize: true,
+        //scrollCollapse: true,
+        autoWidth: false,
+        scrollX: true,
+        scrollY: '450px',
+        rowCallback: function( row, data ) {
+
+        },
+        drawCallback: function(data){
+            var api = this.api();
+
+            // Output the data for the visible rows to the browser's console
+            //console.log( api.rows()[0].length );
+            $('#label-tt-<?php echo $view_rotina;?>').text( api.rows()[0].length );
+        }
+    };
+
+    var rt<?php echo $view_rotina;?> = {
+        t: $('#rotina-<?php echo $view_rotina;?>'),
+        primaryKey: [],
+        element: [],
+        selectedRow: null,
+        table: {
+            filtro: {
+                t: $('#rotina-<?php echo $view_rotina;?>').find('#table-filtro').DataTable(optionsFilter),
+                columns: [],
+                data: [],
+            },
+            resultado: {
+                t: $('#rotina-<?php echo $view_rotina;?>').find('#table-resultado'),
+                columns: [],
+                data: []
+            },
+            formulario: {
+                t: $('#rotina-<?php echo $view_rotina;?>').find('#table-formulario').DataTable(optionsForm),
+                columns: [],
+                data: []
+            }
+        },
+        buttons: {
+            novo: $(),
+            pesquisar: $(),
+            gravar: $()
+        },
+        nav: function(el, data){
+
+            var anch = $('#rotina-<?php echo $view_rotina;?>').find('div#'+el+' .grupo-ancher');
+
+            $.each(data, function(i,v){
+                var exists = false;
+                var grupo = v.grupo.replaceAll(' ','');
+                $.each(anch.find('li'), function(il, vl){
+                    if ($(vl).hasClass('g-' + grupo)){
+                        exists = true;
+                    }
+                });
+
+                var temp = `<li><a href="javascript:;" onClick="rt<?php echo $view_rotina;?>.focusField('${el}','${v.coluna}')" class="link-dark rounded">${v.nome}</a></li>`;
+
+                if (exists){
+                    anch.find('li.g-'+ grupo + ' .list-ancher').append(temp);
+                } else {
+                    anch.append(`<li class="mb-1 g-${grupo}">
+                    <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#${grupo}-collapse" aria-expanded="true">
+                        ${v.grupo}
+                    </button>
+                    <div class="collapse show" id="${grupo}-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small list-ancher">
+                        ${temp}
+                    </ul>
+                    </div>
+                    </li>`);
+                }
+            });
+        },
+        focusField: function(el, field){
+            $('#rotina-<?php echo $view_rotina;?>').find('div#'+el).find('[name="'+field+'"]').focus();
+        },
+        focusedField: function(field){
+            var p = $('#rotina-<?php echo $view_rotina;?>').find('div#formulario [name="'+field+'"]').parents('tr').find('td');
+
+            $('#rotina-<?php echo $view_rotina;?>').find('div#formulario').find('.info').empty().text(p.last().text());
+        }
+    };
+
+    $('#rotina-<?php echo $view_rotina;?> div#formulario').on('focus','.form-control, .form-check-input',function(){
+        rt<?php echo $view_rotina;?>.focusedField($(this)[0].name);
+    });
+
+    $('#rotina-<?php echo $view_rotina;?> div#filtro').on('click','.btn-submit',function(){
+        $.post(window.Area + '<?php echo $view_uri['getlist'];?>', $('#rotina-<?php echo $view_rotina;?> div#filtro').find('.f-input'), function(r){
+
+            //$('.nav-tabs a[href="#resultado"]').Tab('show');
+            //var someTabTriggerEl = document.querySelector('#resultado');
+            $('a[href="#resultado"]').tab('show');
+
+            rt<?php echo $view_rotina;?>.table.resultado.t.clear();
+            rt<?php echo $view_rotina;?>.table.resultado.t.rows.add(r);
+            rt<?php echo $view_rotina;?>.table.resultado.t.draw();
+        },'JSON');
+    });
+
+
+    $('#rotina-<?php echo $view_rotina;?>').on('click','a#novo-registro',function(){
+
+        rt<?php echo $view_rotina;?>.selectedRow = null;
+
+        $('a[href="#formulario"]').tab('show');
+
+        var form = rt<?php echo $view_rotina;?>.table.formulario.data;
+
+        $.each(form, function(i,v){
+            delete form[i]['valor'];
+        });
+
+        rt<?php echo $view_rotina;?>.table.formulario.t.clear();
+        rt<?php echo $view_rotina;?>.table.formulario.t.rows.add(form);
+        rt<?php echo $view_rotina;?>.table.formulario.t.draw();
+    });
+
+    rt<?php echo $view_rotina;?>.table.resultado.t.on('dblclick','tbody tr',function(){
+
+        rt<?php echo $view_rotina;?>.selectedRow = this;
+
+        var temp = rt<?php echo $view_rotina;?>.table.resultado.t.row( rt<?php echo $view_rotina;?>.selectedRow ).data();
+
+        if (typeof temp != 'undefined'){
+            $('a[href="#formulario"]').tab('show');
+
+            var form = rt<?php echo $view_rotina;?>.table.formulario.data;
+
+            $.each(form, function(i,v){
+                form[i]['valor'] = temp[v.coluna];
+            });
+
+            rt<?php echo $view_rotina;?>.table.formulario.t.clear();
+            rt<?php echo $view_rotina;?>.table.formulario.t.rows.add(form);
+            rt<?php echo $view_rotina;?>.table.formulario.t.draw();
+        }
+    });
+
+    $('#rotina-<?php echo $view_rotina;?> div#formulario').on('click','.btn-submit',function(){
+
+        var valido = false;
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.form-<?php echo $view_rotina;?>');
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                } else {
+                    console.log('valido');
+                    valido = true;
+                }
+
+                form.classList.add('was-validated');
+            });
+
+        if (valido){
+            let inputs = $('#rotina-<?php echo $view_rotina;?> div#formulario').find('.f-input');
+            var obj = {};
+
+            $.each(inputs, function(i,v){
+                obj[v.name] = v.value;
+            });
+
+            $.post(window.Area + '<?php echo $view_uri['save'];?>', obj, function(r){
+                if (r.sucess){
+                    if (typeof r.codigo == 'undefined'){
+                        console.log(rt<?php echo $view_rotina;?>.selectedRow );
+                        rt<?php echo $view_rotina;?>.table.resultado.t.row( rt<?php echo $view_rotina;?>.selectedRow ).data(obj).draw();
+                    } else {
+                        obj[<?php echo $view_chavePrimaria;?>] = r.codigo;
+                        rt<?php echo $view_rotina;?>.table.resultado.t.row.add(obj).draw();
+                    }
+                    al.dialog('success','Gravado!','Dados gravados com sucesso!');
+                } else {
+                    al.dialog('warning','Atençao', r.feedback);
+                }
+            },'JSON');
+        }
+    });
+
+    async function loadElement(){
+
+        await $.post(window.Area + 'dicionario/getlist', {
+            codrotina: '<?php echo $view_rotina;?>',
+            tabela: '<?php echo $view_tabela;?>'
+        }, function(r){
+            rt<?php echo $view_rotina;?>.element = r;
+            return new Promise(resolve => resolve);
+        },'JSON');
+
+        $.each(rt<?php echo $view_rotina;?>.element, function(i,v){
+            if (v.flagFiltroPesquisa == 'S'){
+                rt<?php echo $view_rotina;?>.table.filtro.data.push(v);
+            }
+
+            if (v.flagFormulario == 'S'){
+                if (v.flagChavePrimaria == 'S'){
+                    rt<?php echo $view_rotina;?>.primaryKey.push(v.coluna);
+                }
+                rt<?php echo $view_rotina;?>.table.formulario.data.push(v);
+            }
+
+            if (v.flagResultadoPresquisa == 'S'){
+                optionsTable.columns.push({data: v.coluna, title: v.nome});
+            }
+        });
+
+
+        rt<?php echo $view_rotina;?>.table.filtro.t.rows.add(rt<?php echo $view_rotina;?>.table.filtro.data);
+        rt<?php echo $view_rotina;?>.table.filtro.t.draw();
+        rt<?php echo $view_rotina;?>.nav('filtro', rt<?php echo $view_rotina;?>.table.filtro.data);
+
+        rt<?php echo $view_rotina;?>.table.formulario.t.rows.add(rt<?php echo $view_rotina;?>.table.formulario.data);
+        rt<?php echo $view_rotina;?>.table.formulario.t.draw();
+        rt<?php echo $view_rotina;?>.nav('formulario', rt<?php echo $view_rotina;?>.table.formulario.data);
+
+        rt<?php echo $view_rotina;?>.table.resultado.t = rt<?php echo $view_rotina;?>.table.resultado.t.DataTable(optionsTable);
+    }
+
+    function loadElementForm(conditions){
+
+        console.log(conditions);
+
+        $.post(window.Area + '<?php echo $view_uri['get'];?>', conditions, function(r){
+
+            $.each(rt<?php echo $view_rotina;?>.table.formulario.data, function(i,v){
+
+                if (v.coluna in r){
+                    rt<?php echo $view_rotina;?>.table.formulario.data[i]['valor'] = r[v.coluna];
+                }
+            });
+
+            rt<?php echo $view_rotina;?>.table.formulario.t.clear();
+            rt<?php echo $view_rotina;?>.table.formulario.t.rows.add(rt<?php echo $view_rotina;?>.table.formulario.data);
+            rt<?php echo $view_rotina;?>.table.formulario.t.draw();
+
+        },'JSON');
+    }
+
+    $('a[href="#resultado"]').on('shown.bs.tab', function(e){
+        rt<?php echo $view_rotina;?>.table.resultado.t.columns.adjust();
+        console.log('ad');
+    });
+
+    $('button[data-bs-toggle="tab"]').on('shown.bs.modal', function () {
+        rt<?php echo $view_rotina;?>.table.formulario.t.columns.adjust();
+    });
+
+    $(document).ready(function(){
+
+        loadElement();
+
+        $().click();
+
+    });
+
+</script>
+
